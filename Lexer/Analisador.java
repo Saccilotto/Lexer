@@ -25,9 +25,9 @@ public class Analisador {
                 token = Token.FIM;
             }
             
-            if(Character.isLetter(c)){
+            if(Character.isLetter(c) || (Character.isDigit(c) && nome!="")){
                 if(num!="")
-                    break;
+                break;
                 nome += Character.toString(c);
             }else if(Character.isDigit(c)){
                 num += Character.toString(c);
@@ -78,17 +78,30 @@ public class Analisador {
                     case('\n'):
                         token = Token.FIM;
                         break;
+                    case('\t'):
+                        token = Token.FIM;
+                        break;
+                    case('\r'):
+                        token = Token.FIM;
+                        break;
+                    case(' '):
+                        token = Token.FIM;
+                        break;
                     default:
                         break;
                 }
             }
             if (token!=null){
-                if(nome!= ""){
+                if(nome!= "" && nome.length()<100){
                     lexemas.add(new Lexema(nome,Token.IDENT));
                     nome = "";
-                }else if (num!=""){
+                }else if (num!="" && num.length()<100){
                     lexemas.add(new Lexema(num,Token.INT_LIT));
                     num = "";
+                }
+                else{
+                    num = "";
+                    nome = "";
                 }
                 if(token!=Token.FIM){
                     if(token==Token.ASSIGN_OP){
