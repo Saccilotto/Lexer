@@ -19,13 +19,17 @@ public class Codigo{
             // iteration = true;
         } else {
             try {
-                BufferedReader reader = new BufferedReader(new FileReader(fullPath));
-                String currentLine = reader.readLine();
-                Analisador analisador = new Analisador(currentLine);
-                ArrayList<Lexema> lex = analisador.getLexema();
+                try (BufferedReader reader = new BufferedReader(new FileReader(fullPath))) {
+                    String currentLine;
 
-                for(int i = 0;i < analisador.getLexema().size();i++){
-                    System.out.println("('"+ lex.get(i).getValor() + ", " + lex.get(i).getToken() + ", " + lex.get(i).getToken().idToken + ")");
+                    while((currentLine = reader.readLine()) != null) {
+                        Analisador analisador = new Analisador(currentLine);
+                        ArrayList<Lexema> lex = analisador.getLexema();
+
+                        for(int i = 0;i < analisador.getLexema().size();i++){
+                            System.out.println("('"+ lex.get(i).getValor() + ", " + lex.get(i).getToken() + ", " + lex.get(i).getToken().idToken + ")");
+                        }    
+                    } 
                 }
             } catch(IOException ex){
                 System.out.println("Insira um diretorio valido.");
